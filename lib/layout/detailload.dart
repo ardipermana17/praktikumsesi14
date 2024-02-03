@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:newsapp/bloc/detail_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'editnews.dart';
+import 'editnews.dart';
 
 class DetailViewLoad extends StatefulWidget {
   final String id, title, url, desc, date;
@@ -30,11 +30,29 @@ class _DetailViewLoadState extends State<DetailViewLoad> {
               showOptionsDialog(context).then((res) {
                 log("RES $res");
                 if (res == 'delete') {
+                  log("Pilih Hapus $res");
                   context
                       .read<DetailBloc>()
                       .add(DeleteNews(id: widget.id, title: widget.title));
                 } else if (res == 'edit') {
+                  log("Pilih Edit $res");
                   // logika edit disini
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => EditNews(
+                            id: widget.id,
+                            title: widget.title,
+                            url: widget.url,
+                            desc: widget.desc,
+                            date: widget.date)),
+                  ).then((value) {
+                    if (value == 'reload') {
+                      context
+                          .read<DetailBloc>()
+                          .add(LoadNewsEvent(newsId: widget.id));
+                    }
+                  });
                 }
               });
             },
@@ -83,7 +101,7 @@ class _DetailViewLoadState extends State<DetailViewLoad> {
               onPressed: () {
                 Navigator.of(context).pop('delete');
               },
-              child: const Text('delete'),
+              child: const Text('Delete'),
             ),
           ],
         );

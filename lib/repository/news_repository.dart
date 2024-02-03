@@ -1,6 +1,8 @@
 import 'dart:developer';
 import 'dart:io';
+import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:path/path.dart';
 
 class NewsRepository {
   final Dio _dio = Dio();
@@ -11,12 +13,14 @@ class NewsRepository {
       required String date,
       required File image}) async {
     try {
+      String fileName = basename(image.path).split('/').last;
+      ;
       FormData formData = FormData.fromMap({
         'judul': title,
         'deskripsi': content,
         'tanggal': date,
         'url_image':
-            await MultipartFile.fromFile(image.path, filename: 'image.jpg'),
+            await MultipartFile.fromFile(image.path, filename: fileName),
       });
 
       Response response = await _dio.post(
@@ -46,6 +50,7 @@ class NewsRepository {
       log("list $response");
 
       if (response.statusCode == 200) {
+        log("MASUK KONDISI IF LIST 200");
         List newsList = response.data;
         return newsList;
       } else {
@@ -78,6 +83,45 @@ class NewsRepository {
       return responseData['data'];
     } else {
       return {'status': false, 'msg': responseData['msg']};
+    }
+  }
+
+  Future editNews(
+      {required String id,
+      required String title,
+      required String content,
+      required String date,
+      File? image}) async {
+    try {
+      String fileName = basename(image!.path).split('/').last;
+      ;
+      Map<String, dynamic> formDataMap = {
+        'idnews': id,
+        'judul': title,
+        'deskripsi': content,
+        'tanggal': date,
+      };
+      if (image != null) {
+        formDataMap['url_image'] =
+            await MultipartFile.fromFile(image.path, filename: fileName);
+      }
+      FormData formData = FormData.fromMap(formDataMap);
+
+      Response response = await _dio.post(
+        'https://client-server-ardi.000webhostapp.com/editnews.php',
+        data: formData,
+      );
+
+      log("RES ${response.data}");
+      // return response.data['status'];
+      if (response.statusCode == 200 && response.data['status'] == true) {
+        return true;
+      } else {
+        return false;
+        // throw Exception('Failed to edit news');
+      }
+    } catch (error) {
+      throw Exception('Error: $error');
     }
   }
 

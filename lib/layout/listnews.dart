@@ -1,7 +1,6 @@
-// import 'package:newsapp/layout/detailnews.dart';
+import 'package:newsapp/layout/detailnews.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:newsapp/layout/detailview.dart';
 import '../bloc/managenews_bloc.dart';
 
 class ListNews extends StatelessWidget {

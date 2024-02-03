@@ -3,17 +3,16 @@ part of 'managenews_bloc.dart';
 @immutable
 sealed class ManagenewsState extends Equatable {}
 
-final class ManagenewsInitial extends ManagenewsState {
-  final List news;
-  final String searchText;
-
-  ManagenewsInitial({required this.news, this.searchText = ""});
-
+class LoadingNewsState extends ManagenewsState {
   @override
-  List<Object> get props => [news, searchText];
+  List<Object?> get props => [];
 }
 
-final class LoadingListnews extends ManagenewsState {
+class ListNewsState extends ManagenewsState {
+  final List news;
+  final String searchText;
+  ListNewsState({required this.news, this.searchText = ""});
+
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [news, searchText];
 }

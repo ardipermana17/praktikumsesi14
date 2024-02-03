@@ -25,9 +25,9 @@ class _ManageNewsState extends State<ManageNews> {
   Widget build(BuildContext context) {
     return BlocBuilder<ManagenewsBloc, ManagenewsState>(
         builder: (context, state) {
-      if (state is LoadingListnews) {
+      if (state is LoadingNewsState) {
         return LoadingIndicator();
-      } else if (state is ManagenewsInitial) {
+      } else if (state is ListNewsState) {
         log("state ${state.searchText}");
         return ListNews(
           news: state.news,

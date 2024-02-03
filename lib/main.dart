@@ -1,5 +1,6 @@
 import 'package:newsapp/bloc/addnews_bloc.dart';
 import 'package:newsapp/bloc/detail_bloc.dart';
+import 'package:newsapp/bloc/editnews_bloc.dart';
 import 'package:newsapp/bloc/managenews_bloc.dart';
 import 'package:newsapp/repository/news_repository.dart';
 import 'package:flutter/material.dart';
@@ -42,6 +43,9 @@ class MyApp extends StatelessWidget {
             BlocProvider(
                 create: (context) =>
                     DetailBloc(newsRepository: context.read<NewsRepository>())),
+            BlocProvider(
+                create: (context) => EditnewsBloc(
+                    newsRepository: context.read<NewsRepository>())),
           ],
           child: MaterialApp(
             title: "Home",

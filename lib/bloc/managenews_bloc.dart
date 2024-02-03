@@ -9,16 +9,16 @@ part 'managenews_state.dart';
 class ManagenewsBloc extends Bloc<ManagenewsEvent, ManagenewsState> {
   NewsRepository newsRepository;
 
-  ManagenewsBloc({required this.newsRepository}) : super(LoadingListnews()) {
+  ManagenewsBloc({required this.newsRepository}) : super(LoadingNewsState()) {
     on<LoadListNewsEvent>(_listnews);
   }
 
   _listnews(LoadListNewsEvent event, Emitter emit) async {
     String key = event.keyword;
 
-    emit(LoadingListnews());
+    emit(LoadingNewsState());
     List res = await newsRepository.getNewsList(key);
     // log(res.toString());
-    emit(ManagenewsInitial(news: res, searchText: key));
+    emit(ListNewsState(news: res, searchText: key));
   }
 }
